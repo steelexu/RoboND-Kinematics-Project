@@ -6,7 +6,7 @@
 **Steps to complete the project:**  
 
 
-1. Set up  ROS Workspace f.
+1. Set up  ROS Workspace.
 2. Download or clone the [project repository](https://github.com/udacity/RoboND-Kinematics-Project) into the ***src*** directory of your ROS Workspace.  
 3. Experiment with the forward_kinematics environment and get familiar with the robot.
 4. Launch in [demo mode] 
@@ -17,8 +17,8 @@
 [//]: # (Image References)
 
 [image1]: ./misc_images/misc1.png
-[image3]: ./misc_images/final.png
-[image2]: ./misc_images/theta2.png
+[image2]: ./misc_images/misc2.png
+[image3]: ./misc_images/misc3.png
 
 ## [Rubric](https://review.udacity.com/#!/rubrics/972/view) Points
 ### Here I will consider the rubric points individually and describe how I addressed each point in my implementation.  
@@ -42,6 +42,10 @@ s = {alpha0:       0,  a0:       0,  d1:       0.75,
      alpha5:   -pi/2,  a5:       0,  d6:          0,
      alpha6:       0,  a6:       0,  d7:      0.303,  q7:       0}
 ```
+
+Here is an example of how to include an image in your writeup.
+
+![][image1]
 
 #### 2. Using the DH parameter table you derived earlier, create individual transformation matrices about each joint. In addition, also generate a generalized homogeneous transform between base_link and gripper_link using only end-effector(gripper) pose.
 
@@ -71,21 +75,19 @@ R_rpy=tf.transformations.euler_matrix(yaw,pitch,roll)
 
 
 #### 3. Decouple Inverse Kinematics problem into Inverse Position Kinematics and inverse Orientation Kinematics; doing so derive the equations to calculate all individual joint angles.
-
 ```python
-T0_G*R_corr=T0_6*T6_G*R_corr = R_rpy
+T0_G=T0_6*T6_G
 
 r0_6 = R_rpy[:3,:3]*R_corr0[:3,:3].inv()*T6_G[:3,:3].inv()
 #(r0_6 is the rotation part evaluation of T0_6, T6_G[:3,:3] actually is I)
 
-#I got wrist center according to the lesson
+#I got wrist center 
             wx=px-dg*R_rpy[0,0]
             wy=py-dg*R_rpy[1,0]
             wz=pz-dg*R_rpy[2,0]
-theta1=atan2(wy,wx)
 ```
-        
-according  ![the triangle of q2 q3 q5 in the picture][image2], using cosine law calculating theta2,theta3
+             
+according  ![the triangle of q2 q3 q5 in the picture][theta2], calculated theta2,theta3
 
 line from q3 to q5 is roughly as ax=1.501
 
@@ -103,13 +105,17 @@ from FK code , I could print out
 [-sin(q4)*cos(q5)*cos(q6) - sin(q6)*cos(q4),  sin(q4)*sin(q6)*cos(q5) - cos(q4)*cos(q6),  sin(q4)*sin(q5),      0],
 [                                         0,                                          0,                0,      1]]))
 
+```
+
+
 
 r33/r13=-tan(theta4)
 r22/r21=-tan(theta6)
 theta5= atan2(sqrt(r13**2 + r33**2), r23)
 
 
-```
+
+And here's another image! 
 
 
 
@@ -117,10 +123,12 @@ theta5= atan2(sqrt(r13**2 + r33**2), r23)
 
 #### 1. Fill in the `IK_server.py` file with properly commented python code for calculating Inverse Kinematics based on previously performed Kinematic Analysis. Your code must guide the robot to successfully complete 8/10 pick and place cycles. Briefly discuss the code you implemented and your results. 
 
-with above flow, IK_server.py is filled. theta2 has a little error, should be corrected by substracted with a small angle.
+
+Here I'll talk about the code, what techniques I used, what worked and why, where the implementation might fail and how I might improve it if I were going to pursue this project further.  
+
 
 And just for fun, another example image:
-![result of picking][image3]
+![alt text][image3]
 
 
 
