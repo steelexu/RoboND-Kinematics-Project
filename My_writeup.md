@@ -32,7 +32,7 @@ You're reading it!
 ### Kinematic Analysis
 #### 1. Run the forward_kinematics demo and evaluate the kr210.urdf.xacro file to perform kinematic analysis of Kuka KR210 robot and derive its DH parameters.
 
-using T_total =T0_G*R_corr for FK
+using T_total =T0_G*R_corr for [FK.py](./FK.py)
 ```python
 s = {alpha0:       0,  a0:       0,  d1:       0.75,
      alpha1:   -pi/2,  a1:    0.35,  d2:          0,  q2:       q2-pi/2,
