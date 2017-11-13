@@ -119,7 +119,7 @@ def handle_calculate_IK(req):
                     req.poses[x].orientation.z, req.poses[x].orientation.w])
      
             # Calculate joint angles using Geometric IK method
-            R_rpy=tf.transformations.euler_matrix(yaw,pitch,roll)
+            R_rpy=tf.transformations.euler_matrix(yaw,pitch,roll,'rzyx')
             wx=px-dg*R_rpy[0,0]
             wy=py-dg*R_rpy[1,0]
             wz=pz-dg*R_rpy[2,0]
