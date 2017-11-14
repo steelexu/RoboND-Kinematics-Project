@@ -120,10 +120,10 @@ def test_code(test_case):
 
 
     if sin(theta5) < 0:
-        theta4 = atan2(-r3_6[2,2], -r3_6[0,2])
+        theta4 = atan2(-r3_6[2,2], r3_6[0,2])
         theta6 = atan2(r3_6[1,1], -r3_6[1,0])
     else:
-        theta4 = atan2(r3_6[2,2], r3_6[0,2])
+        theta4 = atan2(r3_6[2,2], -r3_6[0,2])
         theta6 = atan2(-r3_6[1,1], r3_6[1,0])
     ## 
     ########################################################################################
@@ -151,6 +151,7 @@ def test_code(test_case):
         wc_y_e = abs(your_wc[1]-test_case[1][1])
         wc_z_e = abs(your_wc[2]-test_case[1][2])
         wc_offset = sqrt(wc_x_e**2 + wc_y_e**2 + wc_z_e**2)
+        print ("your_wc", your_wc)
         print ("\nWrist error for x position is: %04.8f" % wc_x_e)
         print ("Wrist error for y position is: %04.8f" % wc_y_e)
         print ("Wrist error for z position is: %04.8f" % wc_z_e)

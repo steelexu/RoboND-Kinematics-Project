@@ -95,7 +95,7 @@ def handle_calculate_IK(req):
                         [             0 ,              1 ,            0 ,     0],
                         [ -sin(-pi/2),              0 , cos(-pi/2),     0],
                         [             0 ,              0 ,            0 ,     1]])
-        R_corr = simplify(R_z*R_y)
+        #R_corr = simplify(R_z*R_y)
         R_corr0=Matrix([[0, 0,1,0],
                         [0, -1, 0,0],
                         [1, 0,0,0],
@@ -132,24 +132,29 @@ def handle_calculate_IK(req):
             cc=sqrt((r-a1)**2+(wz-d1)**2)
             #cc=cc.subs(s)
 
-            costheta=(a2**2+ax**2-cc**2)/(2*ax*a2)
-            #costheta=costheta.subs(s)
+            cosbeta1=(a2**2+ax**2-cc**2)/(2*ax*a2)
+            
 
-            costheta2=(a2**2-ax**2+cc**2)/(2*cc*a2)
-            #costheta2=costheta2.subs(s)
+            cosbeta2=(a2**2-ax**2+cc**2)/(2*cc*a2)
+            
 
             theta1=atan2(wy,wx)
-            theta3=(pi/2-atan2(sqrt(1-costheta**2),costheta)).evalf(subs=s)       
-            theta2=(pi/2-atan2(sqrt(1-costheta2**2),costheta2)-atan2(wz-d1,r-a1).subs(s)).evalf(subs=s)
+            theta3=(pi/2-atan2(sqrt(1-cosbeta1**2),cosbeta1)-asin(-a3/d4)).evalf(subs=s)     
+            theta2=(pi/2-atan2(sqrt(1-cosbeta2**2),cosbeta2)-atan2(wz-d1,r-a1).subs(s)).evalf(subs=s)
 
             r0_3=T0_3.subs({q1:theta1,q2:theta2,q3:theta3})[:3,:3]
-            r3_6=r0_3.evalf(subs={}).inv()*r0_6x
+            r3_6=r0_3.T.evalf(subs={})*r0_6x
 
-            theta4=atan2(r3_6[2,2],-1*r3_6[0,2])
-            theta6=atan2(r3_6[1,1],-1*r3_6[1,0])
+            #theta4=atan2(r3_6[2,2],-1*r3_6[0,2])
+            #theta6=atan2(r3_6[1,1],-1*r3_6[1,0])
 
             theta5=atan2(sqrt(r3_6[0,2]**2 + r3_6[2,2]**2), r3_6[1,2])
-
+            if sin(theta5) < 0:
+                theta4 = atan2(-r3_6[2,2], r3_6[0,2])
+                theta6 = atan2(r3_6[1,1], -r3_6[1,0])
+            else:
+                theta4 = atan2(r3_6[2,2], -r3_6[0,2])
+                theta6 = atan2(-r3_6[1,1], r3_6[1,0])
 		
 
 
