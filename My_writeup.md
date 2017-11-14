@@ -22,7 +22,7 @@
 [image4]: ./misc_images/kuka-dh.png
 [image5]: ./misc_images/9blue.png
 [image6]: ./misc_images/dh-frame.png
-
+[image7]: ./misc_images/9blue-2.png
 ## [Rubric](https://review.udacity.com/#!/rubrics/972/view) Points
 ### Here I will consider the rubric points individually and describe how I addressed each point in my implementation.  
 
@@ -184,7 +184,7 @@ r3_6[:3,:3]
 with above theory, tried on Ik_debug.pk, then IK_server.py is filled. 
 
 Run in ros, I got 9/10 hit! see
-![result of picking][image5]
+![result of picking][image7]
 
 better than my preivous result
 ![result of preivous picking][image3]
