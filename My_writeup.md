@@ -110,13 +110,14 @@ theta1=atan2(wy,wx)
 
 ```
         
-according  ![the triangle of q2 q3 q5 in the picture][image4], using cosine law calculating beta1,beta2(in the triangle of 2,3,5), and then got theta2,theta3 (line from q3 to q5 is roughly as ax=1.501=sqrt(a3**2+d4**2))
+according  ![the triangle of q2 q3 q5 in the picture][image4], using cosine law calculating beta1,beta2(in the triangle of 2,3,5), and then got theta2,theta3 (line from  3 to  5 is roughly as ax=1.501=sqrt(a3*a3+d4*d4),angle is about 0.036)
 
 ##### find the orientation
 
 ```python
             r0_3=T0_3.subs({q1:theta1,q2:theta2,q3:theta3})[:3,:3]
             r3_6=r0_3.evalf(subs={}).inv()*r0_6
+            #r3_6=r0_3.T.evalf(subs={})*r0_6x
 
 #so we get numerical r3_6
 r3_6=[[r11 r12 r13]
@@ -154,7 +155,7 @@ theta5= atan2(sqrt(r13**2 + r33**2), r23)
 ```
 
 
-in other extreme condition, when sin(q5)=0(i.e, r23= 1 or -1), joint 4,5,6 in one line  above T3_6_symbol could be simplized further
+in other extreme condition, when sin(q5)=0(i.e, r23= 1 or -1), joint 4,5,6 in one line , above T3_6_symbol could be simplized further
 
 ```python
 # when cos(q5)=1,q5=0, q4+q6=atan2(-r12, r11), we can define one of to be 0
