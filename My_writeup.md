@@ -23,6 +23,8 @@
 [image5]: ./misc_images/9blue.png
 [image6]: ./misc_images/dh-frame.png
 [image7]: ./misc_images/9blue-2.png
+[image8]: ./misc_images/error.png
+
 ## [Rubric](https://review.udacity.com/#!/rubrics/972/view) Points
 ### Here I will consider the rubric points individually and describe how I addressed each point in my implementation.  
 
@@ -43,7 +45,7 @@ it's necessary to point out:​​  X_i   represents a  common normal between ea
 * alpha_i-1 (twist angle) = angle between Z_i-1 and Z_i​​  measured about X_i-1 in a right-hand sense.
 * a_i-1 (link length) = distance from Z_i-1 to Z_i​​ measured along  X_i-1
 * d_i  (link offset) = signed distance from X_i-1 to X_i measured along Z_i​​
-​* theta_i/q_i(joint angle) = angle between X_i-1 to X_i measured along Z_i​​ in a right-hand sense. it's a variable for joint here
+​* theta_i or q_i(joint angle) = angle between X_i-1 to X_i measured along Z_i​​ in a right-hand sense. it's a variable for joint here
 
 
 via above rules, check with the urdf(difference is  x4 x5 x6  origin are all put on the joint5/wrist-center),  got following DH table, q2 has a initial offset -pi/2​ , 
@@ -81,9 +83,9 @@ T1_2 =individual_transformation_matrix(q2,alpha1,a1,d2)
 
 for the homogeneous transform  between base_link and gripper_link
 
-T0_G=T0_1*T1_2*T2_3*T3_4*T4_5*T5_6*T6_G
+T0_G=T0_1 * T1_2 * T2_3 * T3_4 * T4_5 * T5_6 * T6_G
 
-with the correction, end-effector pose could be got from T0_G*R_corr  (R_corr = R_z*R_y ), which could be used in FK to check the error after all theta available
+with the correction, end-effector pose could be got from T0_G * R_corr  (R_corr = R_z * R_y ), which could be used in FK to check the error after all theta available
 
 
 ##### numerical homogeneous transform R_rpy
@@ -135,9 +137,11 @@ theta1=atan2(wy,wx)
 
 ```
         
-according  ![the triangle of q2 q3 q5 in the picture][image4], using cosine law calculating beta1,beta2(in the triangle of 2,3,5), and then got theta2,theta3 (line from  3 to  5 is roughly as ax=1.501=sqrt(a3*a3+d4*d4),angle is about 0.036)
+according  ![the triangle of q2 q3 q5 in the picture][image4], 
+using cosine law calculating beta1, beta2(in the triangle of 2,3,5 ,above picture), and then got theta2,theta3 (line from  3 to  5 is roughly as ax=1.501=sqrt(a3 * a3+d4 * d4),angle is about 0.036)
 
 theta2=pi/2-beta2-atan2(wz-d1,r-a1)
+
 theat3=pi/2-beta3--asin(-a3/d4)=pi/2-beta3-0.036
 
 ##### find the orientation
@@ -224,5 +228,5 @@ better than my preivous result
 ![result of preivous picking][image3]
 
 #### next 
-* error analysis, now is around 4.5e-5
+* error analysis, now is around 4.5e-5, see ![error curve][image8]
 * I heard that numpy has speed advantage than sympy, need a try.
