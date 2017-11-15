@@ -109,7 +109,8 @@ def test_code(test_case):
     theta3=(pi/2-atan2(sqrt(1-cosbeta1**2),cosbeta1)-asin(-a3/d4)).evalf(subs=s)       
     theta2=(pi/2-atan2(sqrt(1-cosbeta2**2),cosbeta2)-atan2(wz-d1,r-a1).subs(s)).evalf(subs=s)
 
-    r0_3=T0_3.subs({q1:theta1,q2:theta2,q3:theta3})[:3,:3]
+    r0_3_all=T0_3.subs({q1:theta1,q2:theta2,q3:theta3})
+    r0_3=r0_3_all[:3,:3]
     #r3_6=r0_3.evalf(subs={}).inv("LU")*r0_6x
     r3_6=r0_3.T.evalf(subs={})*r0_6x
 
@@ -134,12 +135,33 @@ def test_code(test_case):
 
     ## (OPTIONAL) YOUR CODE HERE!
 
+
+    T3_4 =individual_transformation_matrix(q4,alpha3,a3,d4)
+    T3_4 = T3_4.subs(s)
+
+    T4_5 =individual_transformation_matrix(q5,alpha4,a4,d5)
+    T4_5 = T4_5.subs(s)
+
+    T5_6 =individual_transformation_matrix(q6,alpha5,a5,d6)
+    T5_6 = T5_6.subs(s)
+
+
+    #T0_4 = simplify(T0_3*T3_4)
+
+    #T0_5 = simplify(T0_4*T4_5)
+    #T0_6 = simplify(T0_5*T5_6)
+    #T0_G = simplify(T0_6*T6_G)
+    #T3_6 = simplify(T3_4*T4_5*T5_6)
+    #T_total = simplify(T0_3*T3_6*T6_G*R_corr0).evalf(subs={q1:theta1,q2:theta2,q3:theta3,q4:theta4,q5:theta5,q6:theta6,q7:0})
+    T_total = r0_3_all*simplify(T3_4*T4_5*T5_6*T6_G*R_corr0).evalf(subs={q4:theta4,q5:theta5,q6:theta6,q7:0})
+
+
     ## End your code input for forward kinematics here!
     ########################################################################################
 
     ## For error analysis please set the following variables of your WC location and EE location in the format of [x,y,z]
     your_wc = [wx,wy,wz] # <--- Load your calculated WC values in this array
-    your_ee = [1,1,1] # <--- Load your calculated end effector value from your forward kinematics
+    your_ee = [T_total[0,3],T_total[1,3],T_total[2,3]] # <--- Load your calculated end effector value from your forward kinematics
     ########################################################################################
 
     ## Error analysis
